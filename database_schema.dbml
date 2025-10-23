@@ -1,0 +1,402 @@
+// Gestion d'Établissement - Schéma de Base de Données
+// Pour utiliser ce fichier : https://dbdiagram.io/
+
+// ===========================================
+// TABLE: niveaux
+// ===========================================
+Table niveaux {
+  id bigint [pk, increment]
+  nom varchar(255) [not null] // Ex: "6ème", "5ème", "4ème", "3ème"
+  code varchar(255) [unique, not null] // Ex: "6", "5", "4", "3"
+  ordre integer [default: 0] // Pour ordonner les niveaux
+  description text
+  responsable_id bigint [ref: > enseignants.id] // Enseignant responsable du niveau
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp [null]
+}
+
+// ===========================================
+// TABLE: classes
+// ===========================================
+Table classes {
+  id bigint [pk, increment]
+  nom varchar(255) [not null] // Ex: "A", "B", "C"
+  niveau_id bigint [ref: > niveaux.id, not null] // Référence vers le niveau
+  responsable_id bigint [ref: > enseignants.id] // Enseignant responsable de classe
+  capacite_max integer // Capacité maximale d'élèves
+  description text
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp [null]
+}
+
+// ===========================================
+// TABLE: enseignants
+// ===========================================
+Table enseignants {
+  id bigint [pk, increment]
+  nom varchar(255) [not null]
+  prenom varchar(255) [not null]
+  sexe enum('M', 'F', 'Autre')
+  date_naissance date
+  lieu_naissance varchar(255)
+  nationalite varchar(255)
+  cin varchar(255) [unique, not null]
+  date_delivrance_cin date
+  lieu_delivrance_cin varchar(255)
+  email varchar(255) [unique]
+  telephone varchar(255)
+  adresse text
+  photo varchar(255)
+  matricule varchar(255) [unique, not null]
+  statut varchar(255) [default: 'actif']
+  specialite varchar(255)
+  diplome varchar(255)
+  date_embauche date
+  salaire decimal(10,2)
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp [null]
+}
+
+// ===========================================
+// TABLE: directeurs
+// ===========================================
+Table directeurs {
+  id bigint [pk, increment]
+  nom varchar(255) [not null]
+  prenom varchar(255) [not null]
+  sexe enum('M', 'F', 'Autre')
+  date_naissance date
+  lieu_naissance varchar(255)
+  nationalite varchar(255)
+  cin varchar(255) [unique, not null]
+  date_delivrance_cin date
+  lieu_delivrance_cin varchar(255)
+  email varchar(255) [unique]
+  telephone varchar(255)
+  adresse text
+  photo varchar(255)
+  matricule varchar(255) [unique, not null]
+  statut varchar(255) [default: 'actif']
+  specialite varchar(255)
+  diplome varchar(255)
+  date_embauche date
+  salaire decimal(10,2)
+  fonction varchar(255) // Directeur, Directeur Adjoint
+  niveau_acces varchar(255)
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp [null]
+}
+
+// ===========================================
+// TABLE: personnel
+// ===========================================
+Table personnel {
+  id bigint [pk, increment]
+  nom varchar(255) [not null]
+  prenom varchar(255) [not null]
+  sexe enum('M', 'F', 'Autre')
+  date_naissance date
+  lieu_naissance varchar(255)
+  nationalite varchar(255)
+  cin varchar(255) [unique, not null]
+  date_delivrance_cin date
+  lieu_delivrance_cin varchar(255)
+  email varchar(255) [unique]
+  telephone varchar(255)
+  adresse text
+  photo varchar(255)
+  matricule varchar(255) [unique, not null]
+  statut varchar(255) [default: 'actif']
+  fonction varchar(255) [not null] // Secrétaire, Surveillant, Comptable, Infirmier
+  specialite varchar(255)
+  diplome varchar(255)
+  date_embauche date
+  salaire decimal(10,2)
+  niveau_acces varchar(255)
+  responsabilites text
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp [null]
+}
+
+// ===========================================
+// TABLE: parent_tuteurs
+// ===========================================
+Table parent_tuteurs {
+  id bigint [pk, increment]
+  nom varchar(255) [not null]
+  prenom varchar(255) [not null]
+  sexe enum('M', 'F', 'Autre')
+  date_naissance date
+  lieu_naissance varchar(255)
+  nationalite varchar(255)
+  cin varchar(255) [unique]
+  date_delivrance_cin date
+  lieu_delivrance_cin varchar(255)
+  email varchar(255) [unique]
+  telephone varchar(255)
+  adresse text
+  profession varchar(255)
+  employeur varchar(255)
+  salaire decimal(10,2)
+  niveau_etude varchar(255)
+  statut varchar(255) [default: 'actif']
+  type_parent varchar(255) // Père, Mère, Tuteur, Grand-parent
+  priorite integer [default: 1] // 1 = Principal, 2 = Secondaire
+  photo varchar(255)
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp [null]
+}
+
+// ===========================================
+// TABLE: eleves
+// ===========================================
+Table eleves {
+  id bigint [pk, increment]
+  nom varchar(255) [not null]
+  prenom varchar(255) [not null]
+  sexe enum('M', 'F', 'Autre')
+  date_naissance date
+  lieu_naissance varchar(255)
+  nationalite varchar(255)
+  numero_piece_identite varchar(255)
+  photo varchar(255)
+  email varchar(255) [unique]
+  telephone varchar(255)
+  telephone_parent varchar(255)
+  email_parent varchar(255)
+  adresse text
+  ville varchar(255)
+  code_postal varchar(255)
+  matricule varchar(255) [unique, not null]
+  classe_id bigint [ref: > classes.id]
+  parent_principal_id bigint [ref: > parent_tuteurs.id]
+  parent_secondaire_id bigint [ref: > parent_tuteurs.id]
+  annee_inscription integer
+  date_entree date
+  ecole_precedente varchar(255)
+  statut varchar(255) [default: 'actif']
+  groupe_sanguin varchar(255)
+  allergies text
+  observations_medicales text
+  absence_statut varchar(255)
+  nombre_absences integer [default: 0]
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp [null]
+}
+
+// ===========================================
+// TABLE: matieres
+// ===========================================
+Table matieres {
+  id bigint [pk, increment]
+  nom varchar(255) [not null]
+  code varchar(255) [unique]
+  coefficient decimal(5,2) [default: 1.00]
+  description text
+  couleur varchar(255) // Pour l'interface utilisateur
+  icone varchar(255)
+  niveau_requis integer
+  statut varchar(255) [default: 'active']
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp [null]
+}
+
+// ===========================================
+// TABLE: salles
+// ===========================================
+Table salles {
+  id bigint [pk, increment]
+  nom varchar(255) [not null]
+  numero varchar(255) [unique, not null]
+  type varchar(255) [not null] // Classe, Laboratoire, Bibliothèque, Bureau
+  capacite integer [not null]
+  equipements json // Array d'équipements
+  description text
+  etage integer
+  batiment varchar(255)
+  statut varchar(255) [default: 'Disponible'] // Disponible, Occupée, En maintenance
+  responsable_id bigint [ref: > personnel.id]
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp [null]
+}
+
+// ===========================================
+// TABLE: paiements
+// ===========================================
+Table paiements {
+  id bigint [pk, increment]
+  eleve_id bigint [ref: > eleves.id, not null]
+  parent_id bigint [ref: > parent_tuteurs.id, not null]
+  type_paiement varchar(255) [not null] // Scolarité, Transport, Cantine, Activités
+  montant decimal(10,2) [not null]
+  montant_paye decimal(10,2) [default: 0.00]
+  date_paiement date
+  date_echeance date [not null]
+  statut varchar(255) [default: 'En attente'] // En attente, Payé, En retard, Annulé
+  mode_paiement varchar(255) // Espèces, Chèque, Virement, Carte
+  reference varchar(255)
+  observations text
+  recu_par bigint [ref: > personnel.id] // Personnel qui a reçu le paiement
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp [null]
+}
+
+// ===========================================
+// TABLE: notes
+// ===========================================
+Table notes {
+  id bigint [pk, increment]
+  eleve_id bigint [ref: > eleves.id, not null]
+  matiere_id bigint [ref: > matieres.id, not null]
+  enseignant_id bigint [ref: > enseignants.id, not null]
+  note decimal(4,2) [not null] // Note sur 20
+  type varchar(255) // Contrôle, Devoir, Examen, Composition, TP, Projet
+  date_evaluation date
+  coefficient decimal(3,2) [default: 1.00]
+  appreciation text
+  statut varchar(255) [default: 'Validée'] // Validée, En attente, Annulée
+  created_at timestamp
+  updated_at timestamp
+}
+
+// ===========================================
+// TABLE: absences
+// ===========================================
+Table absences {
+  id bigint [pk, increment]
+  eleve_id bigint [ref: > eleves.id, not null]
+  date date [not null]
+  motif text
+  justifie boolean [default: false]
+  duree integer // Durée en heures
+  type_absence varchar(255) // Maladie, Retard, Sortie anticipée, Autre
+  piece_justificative varchar(255)
+  contact_parent boolean [default: false]
+  observations text
+  created_at timestamp
+  updated_at timestamp
+}
+
+// ===========================================
+// TABLE: emplois_du_temps
+// ===========================================
+Table emplois_du_temps {
+  id bigint [pk, increment]
+  classe_id bigint [ref: > classes.id, not null]
+  matiere_id bigint [ref: > matieres.id, not null]
+  enseignant_id bigint [ref: > enseignants.id, not null]
+  salle_id bigint [ref: > salles.id]
+  jour varchar(255) [not null] // Lundi, Mardi, Mercredi, Jeudi, Vendredi, Samedi, Dimanche
+  heure_debut time [not null]
+  heure_fin time [not null]
+  type_cours varchar(255) // Cours, TP, TD, Examen, Autre
+  duree integer // Durée en minutes
+  semaine integer // Semaine de l'année (1-52)
+  periode varchar(255) // 1er trimestre, 2ème trimestre, 3ème trimestre
+  statut varchar(255) [default: 'Actif'] // Actif, Annulé, Reporté
+  observations text
+  created_at timestamp
+  updated_at timestamp
+}
+
+// ===========================================
+// TABLE: users
+// ===========================================
+Table users {
+  id bigint [pk, increment]
+  name varchar(255) [not null]
+  email varchar(255) [unique, not null]
+  email_verified_at timestamp
+  password varchar(255) [not null]
+  profilable_type varchar(255) // Directeur, Enseignant, Personnel, Parent_Tuteur
+  profilable_id bigint // ID du profil lié
+  role varchar(255) [not null] // directeur, enseignant, personnel, parent
+  statut varchar(255) [default: 'actif']
+  derniere_connexion timestamp
+  remember_token varchar(100)
+  created_at timestamp
+  updated_at timestamp
+}
+
+// ===========================================
+// TABLE: enseignant_matiere (Pivot)
+// ===========================================
+Table enseignant_matiere {
+  id bigint [pk, increment]
+  enseignant_id bigint [ref: > enseignants.id, not null]
+  matiere_id bigint [ref: > matieres.id, not null]
+  coefficient decimal(3,2) [default: 1.00]
+  date_debut date
+  date_fin date
+  created_at timestamp
+  updated_at timestamp
+  
+  indexes {
+    (enseignant_id, matiere_id) [unique]
+  }
+}
+
+// ===========================================
+// TABLE: classe_matiere (Pivot)
+// ===========================================
+Table classe_matiere {
+  id bigint [pk, increment]
+  classe_id bigint [ref: > classes.id, not null]
+  matiere_id bigint [ref: > matieres.id, not null]
+  enseignant_id bigint [ref: > enseignants.id, not null]
+  coefficient decimal(3,2) [default: 1.00]
+  created_at timestamp
+  updated_at timestamp
+  
+  indexes {
+    (classe_id, matiere_id) [unique]
+  }
+}
+
+// ===========================================
+// TABLE: eleve_parent (Pivot)
+// ===========================================
+Table eleve_parent {
+  id bigint [pk, increment]
+  eleve_id bigint [ref: > eleves.id, not null]
+  parent_id bigint [ref: > parent_tuteurs.id, not null]
+  type_relation varchar(255) // Père, Mère, Tuteur, Grand-parent
+  priorite integer [default: 1] // 1 = Principal, 2 = Secondaire
+  created_at timestamp
+  updated_at timestamp
+  
+  indexes {
+    (eleve_id, parent_id) [unique]
+  }
+}
+
+// ===========================================
+// RELATIONS ADDITIONNELLES
+// ===========================================
+
+// Relations polymorphiques pour les utilisateurs
+Ref: users.profilable_id > directeurs.id [delete: cascade]
+Ref: users.profilable_id > enseignants.id [delete: cascade]
+Ref: users.profilable_id > personnel.id [delete: cascade]
+Ref: users.profilable_id > parent_tuteurs.id [delete: cascade]
+
+// Relations pour les responsables
+Ref: niveaux.responsable_id > enseignants.id [delete: set null]
+Ref: classes.responsable_id > enseignants.id [delete: set null]
+Ref: salles.responsable_id > personnel.id [delete: set null]
+
+// Relations pour les paiements
+Ref: paiements.recu_par > personnel.id [delete: set null]
+
+// Relations pour les emplois du temps
+Ref: emplois_du_temps.salle_id > salles.id [delete: set null]
