@@ -16,6 +16,10 @@ public function up(): void
         $table->string('nom');
         $table->string('code')->nullable();
         $table->integer('coefficient')->default(1);
+        $table->string('couleur')->nullable();
+        $table->string('icone')->nullable();
+        $table->string('description')->nullable();
+        $table->integer('niveau_requis')->nullable();
         $table->timestamps();
         $table->softDeletes();
     });

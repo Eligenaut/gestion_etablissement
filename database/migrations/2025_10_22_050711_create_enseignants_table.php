@@ -17,9 +17,21 @@ public function up(): void
         $table->string('prenom');
         $table->string('email')->nullable();
         $table->string('telephone')->nullable();
-        $table->string('cin')->nullable();
+        $table->string('sexe')->nullable();
+        $table->date('date_naissance')->nullable();
+        $table->string('lieu_naissance')->nullable();
+        $table->string('nationalite')->nullable();
+        $table->string('cin')->unique();
         $table->date('date_delivrance_cin')->nullable();
+        $table->string('lieu_delivrance_cin')->nullable();
         $table->string('adresse')->nullable();
+        $table->string('photo')->nullable();
+        $table->string('matricule')->unique();
+        $table->string('statut')->nullable();
+        $table->string('specialite')->nullable();
+        $table->string('diplome')->nullable();
+        $table->date('date_embauche')->nullable();
+        $table->decimal('salaire', 12, 2)->nullable();
         $table->unsignedBigInteger('classe_responsable_id')->nullable(); // Classe dont il est responsable
         $table->timestamps();
         $table->softDeletes();

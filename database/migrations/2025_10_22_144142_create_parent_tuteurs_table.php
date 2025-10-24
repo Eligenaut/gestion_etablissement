@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('telephone')->nullable();
             $table->string('adresse')->nullable();
             $table->string('profession')->nullable();
+            $table->string('type_parent')->nullable();
+            $table->integer('priorite')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

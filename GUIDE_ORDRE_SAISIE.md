@@ -100,8 +100,8 @@ POST /api/matieres/add
 POST /api/classes/add
 {
     "nom": "A",
-    "niveau_id": 1,  // Référence au niveau 3ème
-    "responsable_id": 1,  // Référence à un enseignant
+    "niveau_id": 1, 
+    "responsable_id": 1,
     "capacite_max": 30,
     "description": "Classe de 3ème A"
 }
@@ -164,9 +164,9 @@ POST /api/eleves/add
 {
     "nom": "Dupont",
     "prenom": "Marie",
-    "classe_id": 1,  // Référence à la classe
-    "parent_principal_id": 1,  // Référence au parent principal
-    "parent_secondaire_id": 2,  // Référence au parent secondaire
+    "classe_id": 1, 
+    "parent_principal_id": 1, 
+    "parent_secondaire_id": 2, 
     "matricule": "ELEV001",
     "date_naissance": "2008-05-15"
 }
@@ -298,3 +298,11 @@ En suivant cet ordre, vous aurez :
 
 **Temps estimé :** 2-3 heures pour un établissement complet
 **Temps minimum :** 30 minutes pour un test de base
+//php artisan migrate:rollback --path=/database/migrations/2025_10_22_050711_create_enseignants_table.php
+php artisan migrate --path=database/migrations/2025_10_22_050649_create_matieres_table.php          
+>> 
+
+php artisan migrate:refresh --path=database/migrations/2025_10_22_050623_create_classes_table.php
+
+//tes
+//php artisan migrate:rollback --path=database/migrations/2025_10_22_050623_create_classes_table.php

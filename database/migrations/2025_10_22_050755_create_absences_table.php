@@ -16,11 +16,12 @@ public function up(): void
         $table->unsignedBigInteger('eleve_id');
         $table->date('date');
         $table->string('motif')->nullable();
-        $table->boolean('justifiee')->default(false);
+        $table->boolean('justifie')->default(false); // <-- renommé
         $table->timestamps();
-
+    
         $table->foreign('eleve_id')->references('id')->on('eleves')->onDelete('cascade');
     });
+    
 }
 
 

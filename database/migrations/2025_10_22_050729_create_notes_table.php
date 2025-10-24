@@ -18,12 +18,14 @@ public function up(): void
         $table->unsignedBigInteger('enseignant_id')->nullable();
         $table->float('note');
         $table->string('type')->nullable();
+        $table->date('date_evaluation')->nullable(); // <-- ajouter cette colonne
         $table->timestamps();
-
+    
         $table->foreign('eleve_id')->references('id')->on('eleves')->onDelete('cascade');
         $table->foreign('matiere_id')->references('id')->on('matieres')->onDelete('cascade');
         $table->foreign('enseignant_id')->references('id')->on('enseignants')->nullOnDelete();
     });
+    
 }
 
     /**

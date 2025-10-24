@@ -9,7 +9,7 @@ return new class extends Migration {
             $table->id();
             $table->string('nom');
             $table->string('prenom');
-            $table->string('sexe');
+            $table->string('sexe')->nullable();
             $table->date('date_naissance')->nullable();
             $table->string('lieu_naissance')->nullable();
             $table->string('nationalite')->nullable();
