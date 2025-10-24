@@ -27,7 +27,7 @@ class SalleController extends Controller
                 'etage' => 'nullable|integer|min:0',
                 'batiment' => 'nullable|string',
                 'statut' => 'nullable|string|in:Disponible,Occupée,En maintenance',
-                'responsable_id' => 'nullable|exists:personnel,id',
+                'responsable_id' => 'nullable|exists:personnels,id',
             ]);
 
             $salle = Salle::create($data);
@@ -69,7 +69,7 @@ class SalleController extends Controller
                 'etage' => 'nullable|integer|min:0',
                 'batiment' => 'nullable|string',
                 'statut' => 'nullable|string|in:Disponible,Occupée,En maintenance',
-                'responsable_id' => 'nullable|exists:personnel,id',
+                'responsable_id' => 'nullable|exists:personnels,id',
             ]);
 
             $salle->update($data);
